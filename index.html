@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Forever Valentine ❤️</title>
+<style>
+/* --- GLOBAL STYLES --- */
+:root{
+  --primary-red:#ff4d6d;
+  --soft-pink:#fff0f3;
+  --dark-pink:#590d22;
+  --gold: #ffd700;
+}
+body {
+  /* ... existing styles ... */
+  background: radial-gradient(circle, var(--soft-pink) 0%, #ffe5ec 100%);
+}
+body{
+  margin:0;
+  font-family:'Georgia', serif;
+  background:var(--soft-pink);
+  color:var(--dark-pink);
+  text-align:center;
+  overflow-x:hidden;
+  user-select: none;
+  min-height: 100vh;
+}
+
+/* --- UTILITIES --- */
+.hidden{display:none !important;}
+.btn{
+  background:var(--primary-red);
+  color:#fff;
+  border:none;
+  padding:12px 25px;
+  border-radius:25px;
+  cursor:pointer;
+  font-size:16px;
+  transition: 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 77, 109, 0.3);
+  margin: 10px 0;
+}
+.btn:hover{background:#ff1744; transform: scale(1.05);}
+.back-btn{
+  background: #fff;
+  color: var(--primary-red);
+  border: 2px solid var(--primary-red);
+  margin-bottom: 20px;
+}
+
+/* --- CONTAINERS --- */
+.screen {
+  padding: 20px;
+  animation: fadeIn 0.8s ease-in-out;
+  max-width: 500px;
+  margin: 0 auto;
+}
+@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+/* --- LOGIN --- */
+.login-card {
+  background:#fff;
+  margin:100px auto;
+  padding:40px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+}
+input{
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:16px;
+  text-align: center;
+  width: 70%;
+  margin-bottom: 15px;
+}
+
+/* --- MENU --- */
+.menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.day-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+.day-card h3 { margin: 0; font-size: 18px; }
+.day-card.locked {
+  filter: grayscale(1);
+  opacity: 0.7;
+  pointer-events: none;
+  background: #e0e0e0;
+}
+
+/* --- ROSE DAY PHOTO ANIMATION --- */
+.rose-img {
+  width: 150px;
+  transition: transform 5s ease-in-out;
+  cursor: pointer;
+  border-radius: 15px;
+}
+.rose-img.grow {
+  transform: scale(1.8);
+}
+
+/* --- CHOCOLATE BOX --- */
+.choco-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+}
+.choco {
+  height: 80px;
+  background: #4e342e;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  padding: 5px;
+}
+.foil {
+  position: absolute; inset:0; z-index:2;
+  background: linear-gradient(45deg, #ffd700, #ffecb3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; transition: 0.6s;
+}
+.choco.unwrap .foil { transform: translateY(-100%); opacity:0; }
+
+/* --- FIXED PROPOSE DAY STYLES --- */
+.propose-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  margin-top: 20px;
+}
+
+.no-btn {
+  background: #bdc3c7 !important;
+  color: #2c3e50 !important;
+  position: absolute;
+  left: 60%; 
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.2s ease;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.yes-btn {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.typewriter {
+  font-family: 'Georgia', serif; 
+  font-style: italic; /* This makes the text write in italics */
+  text-align: left;
+  min-height: 200px;
+  white-space: pre-wrap;
+  line-height: 1.6;
+  font-size: 18px;
+  color: var(--dark-pink);
+}
+
+#loveSVG { width: 200px; margin-top: 20px; opacity: 0; }
+#lovePath {
+  stroke-dasharray: 1000; stroke-dashoffset: 1000;
+  fill: none; stroke: var(--primary-red); stroke-width: 5;
+}
+#loveText { opacity: 0; transition: 2s; color: var(--primary-red); font-size: 24px; font-weight: bold;}
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+.heart-bg {
+  position: fixed;
+  color: rgba(255, 77, 109, 0.3);
+  z-index: -1;
+  pointer-events: none;
+  animation: floatUp 10s linear infinite;
+}
+@keyframes floatUp { from { transform: translateY(100vh); opacity: 1; } to { transform: translateY(-10vh); opacity: 0; } }
+
+.heart-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 100;
+  /* This ensures the animation is smooth for all 100 items */
+  animation: heartExplode 2s ease-out forwards; 
+}
+@keyframes heartExplode {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  50% { opacity: 1; }
+  100% { 
+    transform: translate(calc(-50% + var(--ex)), calc(-50% + var(--ey))) rotate(var(--er)) scale(1); 
+    opacity: 0; 
+  }
+}
+
+.infinity-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forever-text {
+  position: absolute;
+  color: var(--primary-red);
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+  opacity: 0;
+  animation: spinInInfinity 4s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+}
+
+@keyframes spinInInfinity {
+  0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translate(var(--ix), var(--iy)) rotate(360deg) scale(1); opacity: 1; }
+}
+
+.rain-drop {
+  position: fixed;
+  top: -50px;
+  font-size: 24px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: fallDown 3s linear forwards;
+}
+
+@keyframes fallDown {
+  to { transform: translateY(110vh) rotate(360deg); }
+}
+
+.choco-msg {
+  font-weight: bold;
+  font-size: 11px; 
+  line-height: 1.2;
+  color: #fff;
+  padding: 0 5px;
+}
+/* Style for her promise input */
+.her-promise-container {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff9f0; /* Paper color */
+  border-left: 5px solid var(--primary-red);
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  display: none; /* Hidden until your text finishes */
+  animation: fadeIn 1s forwards;
+}
+
+.her-promise-container textarea {
+  width: 90%;
+  height: 80px;
+  border: none;
+  background: transparent;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 16px;
+  outline: none;
+  resize: none;
+  color: #333;
+}
+
+.sealed-msg {
+  color: #2d6a4f;
+  font-weight: bold;
+  display: none;
+  margin-top: 10px;
+}
+
+</style>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("EKslC0adVpfx4kIr2"); // Replace with your Public Key
+   })();
+</script>
+
+</head>
+<body>
+
+<audio id="music" src="our-song.mp3" loop></audio>
+<audio id="voice" src="promise-voice.mp3"></audio>
+<audio id="kissSound" src="kiss.mp3"></audio>
+
+<div id="view-login" class="screen">
+  <div class="login-card">
+    <h1 id="loginHeader" onclick="secretReset()">Hey, Beautiful ❤️</h1>
+    <p>Enter our secret code:</p>
+    <input id="pass" type="password" placeholder="****">
+    <br>
+    <button class="btn" onclick="checkPass()">Enter My Heart</button>
+  </div>
+</div>
+
+<div id="view-menu" class="screen hidden">
+  <h2>Valentine's Week 💘</h2>
+  <p>Select a day to open your gift:</p>
+  <div id="menu-list" class="menu-grid"></div>
+</div>
+
+<div id="view-page" class="screen hidden">
+  <button class="btn back-btn" onclick="goBack()">⬅ Back to Week</button>
+  <div id="page-container" class="page-content"></div>
+</div>
+
+<script>
+// --- GLOBAL VARIABLES ---
+const PASSWORD = "alanaally";
+// PASTE THIS HERE
+function sendNotification(day, action, text) {
+  const serviceID = "service_qekevso";   // Replace with your Service ID
+  const templateID = "template_bs3z8x5"; // Your Template ID
+
+  const templateParams = {
+    day_title: day,    
+    action_type: action, 
+    user_text: text      
+  };
+
+  emailjs.send(serviceID, templateID, templateParams);
+}
+
+const today = new Date(); 
+// ... rest of your code ...
+
+let rainInterval; 
+
+const daysData = [
+  {
+    date: '2026-02-07',
+    title: '🌹 Rose Day',
+    icon: '🌹',
+    html: `<h2>Happy Rose Day</h2>
+      <div class="rose-container">
+        <img id="rosePhoto" src="rose.jpg" class="rose-img" onclick="this.classList.add('grow')">
+        <p>Tap the rose to watch our love grow...</p>
+      </div>
+      <p>Just like this rose, my love for you grows every single day.</p>`,
+  },
+  {
+    date: '2026-02-08',
+    title: '💍 Propose Day',
+    icon: '💍',
+    html: `<h2>Propose Day</h2>
+      <p>I already have you, but I'd choose you again and again.</p>
+      <h3>Will you be my Valentine forever?</h3>
+      <div class="propose-container">
+        <button class="btn yes-btn" onclick="handleYes(event)">YES, i will! 💖</button>
+        <button id="noBtn" class="btn no-btn" onmouseover="moveNo()" ontouchstart="moveNo()">NO, I won't 🫧</button>
+      </div>`,
+  },
+  {
+    date: '2026-02-09',
+    title: '🍫 Chocolate Day',
+    icon: '🍫',
+    html: `<h2>Chocolate Day</h2>
+      <p>Tap the chocolates to unwrap secrets!</p>
+      <div class="choco-grid">
+        <div class="choco" onclick="this.classList.add('unwrap')"><div class="foil">🌟</div>Life is sweeter with you! Happy Chocolate Day, my love</div>
+        <div class="choco" onclick="this.classList.add('unwrap')"><div class="foil">❤️</div>On Chocolate Day, I wish you endless smiles and sweet moments. Even when you’re not in the mood, try to find it because I find happiness just by thinking of you.</div>
+        <div class="choco" onclick="this.classList.add('unwrap')"><div class="foil">🍬</div>Chocolate is sweeter when shared. I can’t wait for the day we taste it together, just us</div>
+        <div class="choco" onclick="this.classList.add('unwrap'); triggerIceCreamRain()">
+          <div class="foil">🍦</div>
+          <div class="choco-msg">I will never forget the night we shared ice cream</div>
+        </div>
+      </div>`
+  },
+{
+    date: '2026-02-10',
+    title: '🧸 Teddy Day',
+    icon: '🧸',
+    html: `<h2>Teddy Day</h2>
+      <p>I want to get you a cuddle buddy! Look at these cuties:</p>
+      
+      <img src="teddy-choice.jpg" style="width:100%; max-width:350px; border-radius:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 15px;">
+      
+      <p>Which one is your favorite? Tell me and I'll buy it for you! ❤️</p>
+      
+      <input type="text" id="teddyInput" placeholder="e.g. The blue one / The pink one" style="width: 80%;">
+      <br>
+      <button class="btn" onclick="pickTeddy()">That's the one! 🧸</button>
+      
+      <div id="teddyMsg" class="hidden" style="margin-top:15px; color:#d63384; font-weight:bold; animation: fadeIn 1s;">
+        Got it! I'll make sure this little guy finds his way to you. 😘
+      </div>`
+  },
+
+  {
+    date: '2026-02-11',
+    title: '🤝 Promise Day',
+    icon: '🤝',
+   html: `<h2>Promise Day</h2>
+  <div id="promiseBox" class="typewriter"></div>
+  
+  <button id="promiseBtn" class="btn" onclick="playPromise()">Read My Promise</button>
+
+  <div id="herPromiseSection" class="her-promise-container">
+    <p><strong>Now, your turn...</strong></p>
+    <textarea id="herInput" placeholder="I promise to..."></textarea>
+    <br>
+    <button class="btn" onclick="sealHerPromise()">Seal with a Pinky Swear 🤝</button>
+    <div id="sealedMsg" class="sealed-msg">✨ Our promises are locked in our hearts forever.</div>
+  </div>`
+  },
+  {
+    date: '2026-02-12',
+    title: '💋 Kiss Day',
+    icon: '💋',
+    html: `<h2>Kiss Day</h2>
+      <p>If kisses were snowflakes, I'd send you a blizzard.</p>
+      <button class="btn" onclick="particleEffect(event, '💋')">Catch a Kiss 💋</button>`
+  },
+  {
+    date: '2026-02-13',
+    title: '❤️ Hug Day',
+    icon: '🫂',
+    html: `<h2>Hug Day</h2><p style="font-size:50px">🫂</p><p>“We need 4 hugs a day for survival. We need 8 hugs a day for maintenance. We need 12 hugs a day for growth.” – Virginia Satir, American Author and Psychotherapist.</p>`
+  },
+  {
+    date: '2026-02-14',
+    title: '💘 Valentine’s Day',
+    icon: '💘',
+    html: `<h2>My Forever Valentine</h2>
+      <div id="finaleText" class="typewriter"></div>
+      <button id="playBtn" class="btn" onclick="startFinale()">▶️ Play My Heart</button>
+      <svg id="loveSVG" viewBox="0 0 600 200"><path id="lovePath" d="M50 100 Q150 20 300 100 T550 100" /></svg>
+      <div id="loveText">I Love You, Allana</div>`
+  }
+];
+
+function checkPass() {
+  const input = document.getElementById("pass");
+  if(input.value.toLowerCase() === PASSWORD) {
+    document.getElementById("view-login").classList.add("hidden");
+    document.getElementById("view-menu").classList.remove("hidden");
+    document.getElementById("music").play().catch(e => console.log("User interaction needed"));
+    renderMenu();
+    createHearts();
+  } else {
+    alert("Wrong password! Try our special code.");
+  }
+}
+
+function renderMenu() {
+  const list = document.getElementById("menu-list");
+  list.innerHTML = "";
+  daysData.forEach((day, index) => {
+    const unlockDate = new Date(day.date + 'T00:00:00');
+    const isLocked = today < unlockDate;
+    const div = document.createElement("div");
+    div.className = `day-card ${isLocked ? 'locked' : ''}`;
+    div.innerHTML = `
+      <div style="text-align:left">
+        <h3>${day.title}</h3>
+        <small>${day.date}</small>
+      </div>
+      <div class="status-icon">
+        ${isLocked ? '🔒' : `<button class="btn" onclick="openPage(${index})">Open</button>`}
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function openPage(index) {
+  const day = daysData[index];
+  document.getElementById("view-menu").classList.add("hidden");
+  document.getElementById("view-page").classList.remove("hidden");
+  document.getElementById("page-container").innerHTML = day.html;
+
+  // --- ADD THIS BLOCK BELOW ---
+sendNotification(day.title, "Visited Day", "She just opened this page.");
+  if (day.title.includes("Promise Day")) {
+    if (localStorage.getItem("alanasPromise")) {
+      playPromise(); // Auto-runs the "Already Saved" logic
+sendNotification(day.title, "Opened Page", "She is looking at this day now.");
+    }
+  }
+  // -----------------------------
+}
+function goBack() {
+  document.getElementById("view-page").classList.add("hidden");
+  document.getElementById("view-menu").classList.remove("hidden");
+  
+  const voice = document.getElementById("voice");
+  voice.pause();
+  voice.currentTime = 0;
+  document.getElementById("music").volume = 1.0;
+
+  const inf = document.querySelector('.infinity-container');
+  if (inf) inf.remove();
+
+  if (rainInterval) {
+    clearInterval(rainInterval);
+    rainInterval = null;
+  }
+  document.querySelectorAll('.rain-drop').forEach(el => el.remove());
+}
+
+function createHearts() {
+  setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart-bg";
+    h.innerText = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = Math.random() * 20 + 10 + "px";
+    h.style.animationDuration = Math.random() * 5 + 5 + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 10000);
+  }, 500);
+}
+
+function particleEffect(e, char) {
+  // 1. Play the sound
+  const sound = document.getElementById("kissSound");
+  if (sound) {
+    sound.currentTime = 0; // Reset to start if clicked rapidly
+    sound.play().catch(err => console.log("Sound enabled after first interaction"));
+  }
+
+  // 2. Create 100 kisses
+  for(let i = 0; i < 100; i++) {
+    const p = document.createElement("div");
+    p.className = "heart-particle"; // Reuse the explosion style for performance
+    
+    // Position exactly where she clicked
+    p.style.left = e.clientX + "px";
+    p.style.top = e.clientY + "px";
+    p.innerText = char;
+    
+    // Randomize the explosion directions (360 degrees)
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 100 + Math.random() * 400; // Some fly far, some stay close
+    
+    p.style.setProperty('--ex', Math.cos(angle) * distance + "px");
+    p.style.setProperty('--ey', Math.sin(angle) * distance + "px");
+    p.style.setProperty('--er', Math.random() * 360 + "deg");
+    
+    // Randomize size for a "cloud" look
+    p.style.fontSize = (Math.random() * 20 + 15) + "px";
+    
+    document.body.appendChild(p);
+    
+    // Remove from memory after animation
+    setTimeout(() => p.remove(), 2500);
+  }
+}
+const promiseText = ` I PROMISE THIS TO YOU BABE
+I will be there to love and care for you whenever you’re down.
+I will always be there to comfort you, because no one else could ever be what you will be to me.
+You will always be the girl in my life, for all time.
+I’ll help you see right from wrong, I’ll understand you, and I’ll give you the strength to keep going.
+When you become afraid, I’ll come to you and say, you can face anything you know that.
+Never go a day without knowing you’re loved.
+I love you, Allana.
+And I just want you to know loving you is like food to my soul.
+`;
+
+function playPromise() {
+  const box = document.getElementById("promiseBox");
+  const pBtn = document.getElementById("promiseBtn");
+  const herSection = document.getElementById("herPromiseSection");
+  const herInput = document.getElementById("herInput");
+  const msg = document.getElementById("sealedMsg");
+  
+  const savedPromise = localStorage.getItem("alanasPromise");
+
+  if (savedPromise) {
+    // If she already saved one, show both immediately
+    pBtn.style.display = "none";
+    box.innerText = promiseText;
+    herSection.style.display = "block";
+    herInput.value = savedPromise;
+    herInput.disabled = true;
+    msg.style.display = "block";
+    msg.innerText = "✨ Our promises are locked in our hearts forever.";
+  } else {
+    // Standard typing effect for the first time
+    pBtn.style.display = "none";
+    let i = 0;
+    function type() {
+      if(i < promiseText.length) {
+        box.innerText += promiseText.charAt(i);
+        i++;
+        setTimeout(type, 50);
+      } else {
+        herSection.style.display = "block";
+      }
+    }
+    type();
+  }
+}
+
+function sealHerPromise() {
+  const input = document.getElementById("herInput");
+  const msg = document.getElementById("sealedMsg");
+  
+  if(input.value.trim() === "") {
+    alert("Write a little something for me first! ❤️");
+    return;
+  }
+  
+  // SAVE to browser memory
+  localStorage.setItem("alanasPromise", input.value);
+  
+  // Disable input and show success
+  sendNotification("Promise Day", "Sent a Promise", input.value);
+
+  input.disabled = true;
+  msg.style.display = "block";
+  
+  // Trigger heart explosion
+  particleEffect(window.event, '💖');
+}
+
+const finalText = `You don’t get it, babe.
+If I lose you, I lose the woman I want to spend my life with and I never want to imagine that.
+That’s why I don’t ever want to lose you.
+I promise you this:
+every morning you wake up, I’ll be there.
+Every night at dinner, I’ll be there.
+Every birthday, every celebration, every Christmas 
+I’ll be there, year after year after year.
+We will grow old together.
+You and I always a couple, always choosing each other.
+`;
+
+function startFinale() {
+  document.getElementById("playBtn").style.display = "none";
+  const el = document.getElementById("finaleText");
+  const music = document.getElementById("music");
+  const voice = document.getElementById("voice");
+  
+  let vol = 1;
+  const fade = setInterval(() => {
+    vol -= 0.1;
+    if(vol <= 0.2) { 
+      music.volume = 0.2; 
+      clearInterval(fade); 
+      voice.play();
+    } else {
+      music.volume = vol;
+    }
+  }, 200);
+
+  let i = 0;
+  function typeFinal() {
+    if(i < finalText.length) {
+      el.innerText += finalText.charAt(i);
+      i++;
+      setTimeout(typeFinal, 60);
+    } else {
+      document.getElementById("loveSVG").style.opacity = 1;
+      document.getElementById("lovePath").style.animation = "draw 3s forwards";
+      setTimeout(() => document.getElementById("loveText").style.opacity = 1, 3000);
+    }
+  }
+  typeFinal();
+}
+
+function moveNo() {
+  const btn = document.getElementById('noBtn');
+  // Constrain movement to within 80% of the screen to keep it visible
+  const maxX = window.innerWidth * 0.8;
+  const maxY = window.innerHeight * 0.8;
+  const randomX = Math.floor(Math.random() * maxX);
+  const randomY = Math.floor(Math.random() * maxY);
+  
+  btn.style.position = 'fixed'; // Switching to fixed makes it fly across the whole screen
+  btn.style.left = randomX + 'px';
+  btn.style.top = randomY + 'px';
+}
+
+function handleYes(e) {
+  // 1. Send the email FIRST
+  sendNotification("Propose Day", "SAID YES!", "She officially clicked Yes! ❤️");
+
+  // 2. Hide the buttons
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = e.target;
+  if(noBtn) noBtn.style.display = 'none';
+  if(yesBtn) yesBtn.style.display = 'none';
+
+  // 3. Start the animations
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart-particle';
+    heart.innerHTML = '❤️';
+    heart.style.left = e.clientX + 'px';
+    heart.style.top = e.clientY + 'px';
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 200 + Math.random() * 300;
+    heart.style.setProperty('--ex', Math.cos(angle) * distance + 'px');
+    heart.style.setProperty('--ey', Math.sin(angle) * distance + 'px');
+    heart.style.setProperty('--er', Math.random() * 360 + 'deg');
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 2500);
+  }
+  setTimeout(createInfinity, 500);
+}
+function createInfinity() {
+  const container = document.createElement('div');
+  container.className = 'infinity-container';
+  document.body.appendChild(container);
+  const totalSteps = 30; 
+  for (let i = 0; i < totalSteps; i++) {
+    const t = (i / totalSteps) * Math.PI * 2;
+    const scale = Math.min(window.innerWidth, window.innerHeight) * 0.4;
+    const x = (scale * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
+    const y = (scale * Math.sin(t) * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
+    const text = document.createElement('div');
+    text.className = 'forever-text';
+    text.innerText = 'forever us';
+    text.style.setProperty('--ix', x + 'px');
+    text.style.setProperty('--iy', y + 'px');
+    text.style.animationDelay = `${i * 0.15}s`;
+    container.appendChild(text);
+  }
+}
+
+function triggerIceCreamRain() {
+  const emojis = ['🍫','🍦','🍫', '🍨', '🍫', '🍪','🍫', '😋'];
+  if (rainInterval) clearInterval(rainInterval);
+  rainInterval = setInterval(() => {
+    const drop = document.createElement('div');
+    drop.className = 'rain-drop';
+    drop.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    drop.style.left = Math.random() * 100 + 'vw';
+    drop.style.animationDuration = (Math.random() * 4 + 4) + 's'; 
+    document.body.appendChild(drop);
+    setTimeout(() => drop.remove(), 5000);
+  }, 300); 
+}
+let resetCount = 0;
+let resetTimer;
+
+function secretReset() {
+  resetCount++;
+  
+  // Clear the timer if it exists and start a new one
+  clearTimeout(resetTimer);
+  resetTimer = setTimeout(() => { resetCount = 0; }, 3000); 
+
+  if (resetCount === 5) {
+    localStorage.clear();
+    alert("System Reset: All secrets and promises have been cleared. ❤️");
+    location.reload();
+  }
+}
+function pickTeddy() {
+  const input = document.getElementById("teddyInput");
+  const msg = document.getElementById("teddyMsg");
+
+  if(input.value.trim() === "") {
+    alert("Please tell me which one you like! 🥺");
+    return;
+  }
+
+  // Save her choice so you can check it later if you look at her phone/browser
+  localStorage.setItem("alanasTeddyChoice", input.value);
+
+  // Show the confirmation message
+ sendNotification("Teddy Day", "Picked a Teddy", `Choice: ${input.value}`);
+
+  msg.classList.remove("hidden");
+  
+  // Disable the input so she knows it's sent
+  input.disabled = true;
+  
+  // Celebrate with hearts!
+  particleEffect(window.event, '🧸');
+}
+
+</script>
+</body>
+</html>

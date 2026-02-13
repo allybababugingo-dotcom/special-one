@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Forever Valentine ❤️</title>
+<title>My Forever Friend ❤️</title>
 <style>
 /* --- GLOBAL STYLES --- */
 :root{
@@ -328,7 +328,7 @@ input{
 
 <script>
 // --- GLOBAL VARIABLES ---
-const PASSWORD = "alanaally";
+const PASSWORD = "zahara";
 // PASTE THIS HERE
 function sendNotification(day, action, text) {
   const serviceID = "service_qekevso";   // Replace with your Service ID
@@ -358,7 +358,7 @@ const daysData = [
         <img id="rosePhoto" src="rose.jpg" class="rose-img" onclick="this.classList.add('grow')">
         <p>Tap the rose to watch our love grow...</p>
       </div>
-      <p>Just like this rose, my love for you grows every single day.</p>`,
+      <p>Just like this rose, our friendship for you grows every single day.</p>`,
   },
   {
     date: '2026-02-08',
@@ -366,7 +366,7 @@ const daysData = [
     icon: '💍',
     html: `<h2>Propose Day</h2>
       <p>I already have you, but I'd choose you again and again.</p>
-      <h3>Will you be my Valentine forever?</h3>
+      <h3>Will you be my Friend forever?</h3>
       <div class="propose-container">
         <button class="btn yes-btn" onclick="handleYes(event)">YES, i will! 💖</button>
         <button id="noBtn" class="btn no-btn" onmouseover="moveNo()" ontouchstart="moveNo()">NO, I won't 🫧</button>
@@ -447,7 +447,7 @@ const daysData = [
       <div id="finaleText" class="typewriter"></div>
       <button id="playBtn" class="btn" onclick="startFinale()">▶️ Play My Heart</button>
       <svg id="loveSVG" viewBox="0 0 600 200"><path id="lovePath" d="M50 100 Q150 20 300 100 T550 100" /></svg>
-      <div id="loveText">I Love You, Allana</div>`
+      <div id="loveText">friendship forever</div>`
   }
 ];
 
@@ -567,15 +567,15 @@ function particleEffect(e, char) {
     setTimeout(() => p.remove(), 2500);
   }
 }
-const promiseText = ` I PROMISE THIS TO YOU BABE
+const promiseText = ` I PROMISE THIS TO YOU FRIEND
 I will be there to love and care for you whenever you’re down.
 I will always be there to comfort you, because no one else could ever be what you will be to me.
 You will always be the girl in my life, for all time.
 I’ll help you see right from wrong, I’ll understand you, and I’ll give you the strength to keep going.
 When you become afraid, I’ll come to you and say, you can face anything you know that.
-Never go a day without knowing you’re loved.
-I love you, Allana.
-And I just want you to know loving you is like food to my soul.
+Never go a day without knowing you HAVE A FRIEND
+Forever Friendship
+
 `;
 
 function playPromise() {
@@ -635,8 +635,8 @@ function sealHerPromise() {
   particleEffect(window.event, '💖');
 }
 
-const finalText = `You don’t get it, babe.
-If I lose you, I lose the woman I want to spend my life with and I never want to imagine that.
+const finalText = `You don’t get it, zahara.
+If I lose you, I lose the woman that has a special place in my heart and I never want to imagine that.
 That’s why I don’t ever want to lose you.
 I promise you this:
 every morning you wake up, I’ll be there.
@@ -644,7 +644,7 @@ Every night at dinner, I’ll be there.
 Every birthday, every celebration, every Christmas 
 I’ll be there, year after year after year.
 We will grow old together.
-You and I always a couple, always choosing each other.
+You and I always friends, always choosing each other.
 `;
 
 function startFinale() {
@@ -732,7 +732,7 @@ function createInfinity() {
     const y = (scale * Math.sin(t) * Math.cos(t)) / (1 + Math.pow(Math.sin(t), 2));
     const text = document.createElement('div');
     text.className = 'forever-text';
-    text.innerText = 'forever us';
+    text.innerText = 'forever friendship';
     text.style.setProperty('--ix', x + 'px');
     text.style.setProperty('--iy', y + 'px');
     text.style.animationDelay = `${i * 0.15}s`;
@@ -795,4 +795,5 @@ function pickTeddy() {
 
 </script>
 </body>
+
 </html>
